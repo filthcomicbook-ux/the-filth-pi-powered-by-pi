@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Install SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 34.122.15.67 >> ~/.ssh/known_hosts
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 34.122.15.67 >> ~/.ssh/known_hosts
 
-    - name: Deploy to VM
-      run: |
-        ssh filth_comicbook@34.122.15.67 << 'EOF'
-          cd /home/filth_comicbook/backend/app
-          git pull origin main
-          source venv/bin/activate
-          pip install -r requirements.txt --upgrade
-          sudo systemctl restart filthapp.service
-        EOF
+      - name: Deploy to VM
+        run: |
+          ssh filth_comicbook@34.122.15.67 << 'EOF'
+            cd /home/filth_comicbook/backend/app
+            git pull origin main
+            source venv/bin/activate
+            pip install -r requirements.txt --upgrade
+            sudo systemctl restart filthapp.service
+          EOF
